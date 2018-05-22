@@ -34,7 +34,8 @@ public class EnemyController : MonoBehaviour {
     } else {
       collider.isTrigger = false;
       if(bounceFramesLeft > 0){
-        Debug.Log(rigidBody.velocity);
+        // Debug.Log(rigidBody.velocity);
+        transform.position += Vector3.right * bounceDist * Time.deltaTime;
         bounceFramesLeft -= 1;
       }
     }
@@ -49,7 +50,7 @@ public class EnemyController : MonoBehaviour {
     // transform.position += Vector3.right * bounceDist;
     bounceFramesLeft = bounceFramesTotal;
     collider.isTrigger = false;
-    rigidBody.AddForce(Vector3.right * bounceDist);
+    // rigidBody.AddForce(Vector3.right * bounceDist);
   }
 
   public int getDamage(){

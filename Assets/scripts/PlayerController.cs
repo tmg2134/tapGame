@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -6,23 +7,25 @@ public class PlayerController : MonoBehaviour {
 
   float abilitySize;
   public float hitpoints;
-  Animator playerAnimator;
+  public Slider healthSlider;
+  // Animator playerAnimator;
   
-  CharacterController controller;
+  // CharacterController controller;
 
   List<Ability> playerAbilities;
 
 	// Initialization
 	void Start () {
-    controller =  GetComponent<CharacterController>();
+    // controller =  GetComponent<CharacterController>(); 
     // weaponCollider = GetComponentInChildren<CheckWeaponCollision>();
-    playerAnimator = GetComponent<Animator>();
+    // playerAnimator = GetComponent<Animator>(); 
 
     // input not needed? Auto move
     // input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
     // inputDir = inputDirut.normalized;
 
     // targetRotation = Mathf.Atan2(inputDir.x, inputDir.y) * Mathf.Rad2Deg + cameraT.eulerAngles.y;
+    healthSlider.maxValue = hitpoints;
 
 	}
 	
@@ -39,8 +42,9 @@ public class PlayerController : MonoBehaviour {
 
     touchList = checkTouches(Input.touches);
 
-    if(touchList != null){
+    if(touchList.Count > 0){
       Attack(touchList);
+      Debug.Log(touchList);
     } else {
       Defend();
     }
@@ -74,6 +78,7 @@ public class PlayerController : MonoBehaviour {
     // int fingerCount = 0;
     List<Touch> leftOverTouches = new List<Touch>();
     foreach (Touch touch in touchArray) {
+      Debug.Log("testTouch");
       if (touch.phase != TouchPhase.Ended && touch.phase != TouchPhase.Canceled){
         // Check if player has abilities, and if so, iterate
         bool usedTouch = false;
@@ -104,10 +109,10 @@ public class PlayerController : MonoBehaviour {
 
   public void takeDamage(int damage){
     hitpoints -= damage;
+    healthSlider.value = hitpoints;
   }
 
   void OnTriggerStay2D(Collider2D other) {
-    Debug.Log("HELLO?");
     if(other.gameObject.tag == "Enemy"){
       EnemyController enemyController = other.gameObject.GetComponentInParent<EnemyController>();
       enemyController.Bounce();
